@@ -1,0 +1,23 @@
+{
+  "name": "pontx-translate-plugin",
+  "version": "0.3.68",
+  "description": "translate english to chinese",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "pretest": "npm run build",
+    "watch": "tsc -w",
+    "clean": "rimraf lib && rimraf tsconfig.tsbuildinfo",
+    "build": "npm run clean && tsc --build"
+  },
+  "files": [
+    "package.json",
+    "lib"
+  ],
+  "keywords": [],
+  "devDependencies": {
+    "@types/node": "*"
+  },
+  "author": "yuxuan-ctrl",
+  "license": "MIT"
+}

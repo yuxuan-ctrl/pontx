@@ -16,7 +16,7 @@ import {
 import * as _ from "lodash";
 import { compileTemplate, parseAst2PontJsonSchema } from "./compiler";
 import { parseJsonSchema } from "./schema";
-import { Translate } from "pontx-manager/src/translator";
+import PontxMetaTranslatePlugin from "pontx-translate-plugin";
 
 export function parseOAS3Interface(
   inter: OAS3.OperationObject & { path: string; method: string },
@@ -84,7 +84,11 @@ export function parseOAS3Interface(
   return pontAPI;
 }
 
-export async function parseSwagger2APIs(swagger: OAS3.OpenAPIObject, defNames: string[], translator: Translate) {
+export async function parseSwagger2APIs(
+  swagger: OAS3.OpenAPIObject,
+  defNames: string[],
+  translator: PontxMetaTranslatePlugin,
+) {
   const tags = [
     ...(swagger.tags || []),
     {
@@ -174,7 +178,7 @@ export async function parseSwagger2APIs(swagger: OAS3.OpenAPIObject, defNames: s
 export async function parseOAS3(
   swagger: OAS3.OpenAPIObject,
   name: string,
-  translator: Translate,
+  translator: PontxMetaTranslatePlugin,
 ): Promise<PontSpec.PontSpec> {
   const draftClasses = _.map(swagger?.components?.schemas || {}, (schema: any, defName) => {
     const defNameAst = compileTemplate(defName);

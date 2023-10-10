@@ -19,7 +19,8 @@
       "pontx-generate-core": ["plugins/generate/core"],
       "pontx-react-hooks-generate-plugin": ["plugins/generate/pontx-react-hooks-generate-plugin"],
       "pontx-oas2-parser-plugin": ["plugins/parser/pontx-oas2-parser-plugin"],
-      "pontx-oas3-parser-plugin": ["plugins/parser/pontx-oas3-parser-plugin"]
+      "pontx-oas3-parser-plugin": ["plugins/parser/pontx-oas3-parser-plugin"],
+      "pontx-translate-plugin": ["plugins/translate/pontx-translate-plugin"]
     }
   },
   "include": ["packages/", "plugins/"],
@@ -68,6 +69,9 @@
     },
     {
       "path": "plugins/parser/pontx-oas3-parser-plugin"
+    },
+    {
+      "path": "plugins/translate/pontx-translate-plugin"
     }
   ]
 }

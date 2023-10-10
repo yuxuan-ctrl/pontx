@@ -14,8 +14,10 @@ export {
   PontxPlugins,
   PontPublicManagerConfig,
   PontxReportPlugin,
+  PontxTranslatePlugin,
 } from "./config";
 export { PontManager, getSpecByName } from "./manager";
+export { PontDictManager } from "./LocalDictManager";
 export * from "./logger";
 export { requireTsFile, findRealPath, requireUncached } from "./utils";
 export { PontSpec };

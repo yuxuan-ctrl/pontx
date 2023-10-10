@@ -193,27 +193,44 @@ export class PontManager {
   /** 流程方法：拉取并解析远程元数据 */
   static async fetchRemotePontMeta(manager: PontManager): Promise<PontManager> {
     const remoteSpecPromises = manager.innerManagerConfig.origins.map(async (origin) => {
-      const fetchPlugin = await Promise.resolve(origin.plugins.fetch.instance);
-      const transformPlugin = await Promise.resolve(origin.plugins.transform?.instance);
-      const metaStr = await fetchPlugin.apply(origin, origin.plugins.fetch.options);
+      try {
+        const fetchPlugin = await Promise.resolve(origin.plugins.fetch.instance);
+        const translatePlugin = await Promise.resolve(origin.plugins.translate.instance);
+        const transformPlugin = await Promise.resolve(origin.plugins.transform?.instance);
+        const remoteStr = await fetchPlugin.apply(origin, origin.plugins.fetch.options);
+        const tanslateSingleInstance = await translatePlugin.apply(
+          manager.logger,
+          manager.innerManagerConfig.translateOptions,
+          manager.innerManagerConfig,
+        );
 
-      if (!metaStr) {
-        // manager.logger.error("未获取到远程数据");
-        const cacheSpec = await fetchRemoteCacheSpec(manager.logger, manager.innerManagerConfig.outDir, origin.name);
-        return cacheSpec;
-      }
+        const metaStr = await tanslateSingleInstance.translateChinese(remoteStr, (err) => {
+          manager.logger.error({
+            originName: "translate",
+            message: `元数据中的中文翻译失败，请查看您的网络环境: ${err.message}`,
+            stack: err.stack,
+            processType: "fetch",
+          });
+        });
+        // const metaStr = remoteStr;
+        manager.logger.info("远程数据中非法中文已翻译成功");
+        manager.logger.info("远程数据获取成功");
+        if (!metaStr) {
+          // manager.logger.error("未获取到远程数据");
+          const cacheSpec = await fetchRemoteCacheSpec(manager.logger, manager.innerManagerConfig.outDir, origin.name);
+          return cacheSpec;
+        }
+        const parserPlugin = await Promise.resolve(origin.plugins.parser.instance);
+        const spec = await parserPlugin.apply(metaStr, origin.name, origin.plugins.parser.options);
+        const transformedSpec = (await transformPlugin?.apply(spec, origin.plugins.transform?.options)) || spec;
+        if (!transformedSpec) {
+          manager.logger.error("远程数据未解析成功！");
+          return;
+        }
 
-      const parserPlugin = await Promise.resolve(origin.plugins.parser.instance);
-      const spec = await parserPlugin.apply(metaStr, origin.name, origin.plugins.parser.options);
-      const transformedSpec = (await transformPlugin?.apply(spec, origin.plugins.transform?.options)) || spec;
-      if (!transformedSpec) {
-        manager.logger.error("远程数据未解析成功！");
-        return;
-      }
-
-      transformedSpec.name = origin.name || transformedSpec.name;
-
-      return transformedSpec;
+        transformedSpec.name = origin.name || transformedSpec.name;
+        return transformedSpec;
+      } catch (e) {}
     });
 
     const remoteSpecs = await Promise.all(remoteSpecPromises);

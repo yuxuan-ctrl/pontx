@@ -1,11 +1,16 @@
 import * as path from "path";
-import * as fs from "fs-extra";
 import { PontSpec, PontAPI } from "pontx-spec";
+import * as fs from "fs-extra";
 import { PontManager } from "./manager";
 import { PontLogger } from "./logger";
 import { findRealPath, loadPresetPluginPath, requireTsFile, requireUncached } from "./utils";
-import { Translate } from "./translator";
-
+class TranslateOptions {
+  cacheFilePath?: string;
+  baidu?: {
+    appId: string;
+    secret: string;
+  };
+}
 class PublicOriginConfig {
   url: string;
   name: string;
@@ -82,6 +87,15 @@ export class PontxReportPlugin extends PontxPlugin {
   apply(manager: PontManager, options?: any): void {}
 }
 
+export class PontxTranslatePlugin extends PontxPlugin {
+  apply(logger: PontLogger, translateOptions: TranslateOptions, innerConfig: PontInnerManagerConfig): any {}
+  translateCollect(texts: string[], engineIndex: number = 0): void {}
+  innerConfig: PontInnerManagerConfig;
+  async translateChinese(jsonString: string, errCallback: (err) => any): Promise<string> {
+    return "";
+  }
+}
+
 export class PontxConfigPlugin extends PontxPlugin {
   apply(...args: any[]) {}
   async getSchema(): Promise<string> {
@@ -102,6 +116,7 @@ export class PontxPlugins {
   mocks: PluginItem<PontxMocksPlugin>;
   generate: PluginItem<PontxGeneratorPlugin>;
   report: PluginItem<PontxReportPlugin>;
+  translate: PluginItem<PontxTranslatePlugin>;
 
   static getDefaultPlugins(plugin?: PurePluginConfig) {
     let options = {};
@@ -114,6 +129,7 @@ export class PontxPlugins {
       parser: { use: "pontx-oas2-parser-plugin", options },
       generate: { use: "pontx-react-hooks-generate-plugin", options },
       mocks: { use: "pontx-mocks-plugin", options },
+      translate: { use: "pontx-translate-plugin", options },
     };
   }
 }
@@ -130,6 +146,7 @@ export function requireModule(pluginPath: string, configDir: string, rootDir: st
       "pontx-react-hooks-generate-plugin",
       "pontx-oas2-parser-plugin",
       "pontx-mocks-plugin",
+      "pontx-translate-plugin",
     ].includes(pluginPath)
   ) {
     requirePath = pluginPath;
@@ -190,6 +207,7 @@ export class PontInnerManagerConfig {
   configDir: string;
   plugins: PontxPlugins;
   translator: any;
+  translateOptions: any;
 
   static parsePurePlugin(plugin: PurePluginConfig, originName?: string): SimplePluginConfig {
     if (typeof plugin === "string") {
@@ -343,7 +361,7 @@ export class PontInnerManagerConfig {
     } as PontInnerManagerConfig;
 
     if (translate) {
-      innerConfig.translator = new Translate(logger, translate, innerConfig);
+      innerConfig.translateOptions = translate;
     }
 
     innerConfig.plugins = PontInnerManagerConfig.loadGlobalPlugins(config, configDir, logger, innerConfig);
