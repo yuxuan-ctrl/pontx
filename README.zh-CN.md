@@ -6,9 +6,7 @@
 
 <h1 align="center">Pontx</h1>
 
-[Pontx](https://github.com/pontjs/pontx) 是一个轻量的插件化的 API 生命周期管理工具。
-
-Pontx 通过 CLI、[VSCode IDE 插件](https://marketplace.visualstudio.com/items?itemName=jasonHzq.vscode-pontx) 和 Web 平台(WIP) 来提供服务。
+[Pontx](https://github.com/pontjs/pontx) 是一个轻量的插件化的 API 生命周期管理工具，支持 RESTful、RPC等多种风格的 API 协议，支持 CLI、[VSCode IDE 插件](https://marketplace.visualstudio.com/items?itemName=jasonHzq.vscode-pontx) 和 Web 平台(WIP) 来提供 API 管理服务。
 
 简体中文 | [English](./README.md)
 
