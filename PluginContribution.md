@@ -1,5 +1,9 @@
 # Pontx 插件开发指南
 
+Pontx 以 [Pontx API Spec](https://github.com/pontjs/pontx/blob/main/packages/pontx-spec/docs/classes/PontSpec.md) 为标准提供 API 生命周期管理能力。
+
+[Pontx API Spec](https://github.com/pontjs/pontx/blob/main/packages/pontx-spec/docs/classes/PontSpec.md) 是一个支持 RESTful、RPC 等不同风格的 OpenAPI 设计规范，继承且兼容 [OAS2](https://swagger.io/specification/v2/) 和 [JSONSchema](https://json-schema.org/)。
+
 ## Pontx 插件类别介绍
 
 ## Pontx 插件开发
