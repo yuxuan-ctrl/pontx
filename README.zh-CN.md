@@ -6,11 +6,9 @@
 
 <h1 align="center">Pontx</h1>
 
-[Pontx](https://github.com/pontjs/pontx) 是一个轻量的插件化的 API 生命周期管理工具，以 [Pontx API Spec](https://github.com/pontjs/pontx/blob/main/packages/pontx-spec/docs/classes/PontSpec.md) 为标准提供 API 生命周期管理能力。
+[Pontx](https://github.com/pontjs/pontx) 是一个轻量的插件化的 API 生命周期管理工具。
 
-[Pontx API Spec](https://github.com/pontjs/pontx/blob/main/packages/pontx-spec/docs/classes/PontSpec.md) 是一个支持 RESTful、RPC 等不同风格的 OpenAPI 设计规范，继承且兼容 [OAS2](https://swagger.io/specification/v2/) 和 [JSONSchema](https://json-schema.org/)。
-
-Pontx 通过 Pontx CLI、[Pontx VSCode IDE Extension](https://marketplace.visualstudio.com/items?itemName=jasonHzq.vscode-pontx) 和 Pontx Web 平台(WIP) 来提供服务。
+Pontx 通过 CLI、[VSCode IDE 插件](https://marketplace.visualstudio.com/items?itemName=jasonHzq.vscode-pontx) 和 Web 平台(WIP) 来提供服务。
 
 简体中文 | [English](./README.md)
 
